@@ -1,4 +1,8 @@
 module LuceneQueryParser
+
+  class ErrorReporter 
+  end
+
   class Parser < Parslet::Parser
 
     # Public: find and explain errors in a query, if any
@@ -11,8 +15,8 @@ module LuceneQueryParser
       parse query
       nil
     rescue Parslet::ParseFailed => error
-      cause = find_cause root.error_tree
-      cause =~ /line (\d+) char (\d+)/
+      cause = error
+      cause.message =~ /line (\d+) char (\d+)/
       {:line => $1.to_i, :column => $2.to_i, :message => cause}
     end
 
